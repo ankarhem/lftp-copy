@@ -1,0 +1,27 @@
+image: idealpink/lftp-copy:latest
+
+# define variables SSH_KEY and SSH_KEY_PUB in gitlab ci
+variables:
+  SSH_PORT: 1234
+  SSH_HOST: 1.1.1.1
+  SSH_USER: username
+
+stages:
+  - move-files
+  - restart-service
+
+move-files:
+  stage: move-files
+  only:
+    - master
+  script:
+    - init_ssh
+    - copy_files ./folder/in/repo/ location/on/server/
+
+restart-service:
+  image: docker:20.10.0
+  stage: restart-nginx
+  only:
+    - master
+  script:
+    - docker restart nginx

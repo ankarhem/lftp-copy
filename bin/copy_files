@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+set -e
+
+FROM_DIR=$1
+TO_DIR=$2
+
+lftp -e "\
+set ssl:verify-certificate no; \
+set sftp:auto-confirm yes; \
+set sftp:connect-program 'ssh -v -a -x -i ~/.ssh/id_rsa'; \
+open sftp://$SSH_USER:dummy@$SSH_HOST:$SSH_PORT; \
+mirror -X .* -X .*/ --reverse --verbose --delete $FROM_DIR $TO_DIR; \
+bye"
