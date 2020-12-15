@@ -27,7 +27,7 @@ move-files:
 
 restart-service:
   image: docker:20.10.0
-  stage: restart-nginx
+  stage: restart-service
   only:
     - master
   script:
